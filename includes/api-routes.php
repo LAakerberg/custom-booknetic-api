@@ -1,14 +1,7 @@
 <?php
 
 add_action('rest_api_init', function () {
-    // Route to get ALL data
-    register_rest_route('custom-booking/v2', '/booknetic', [
-        'methods'  => ['GET'],
-        'callback' => 'get_all_booknetic_data',
-        'permission_callback' => 'allow_jwt_or_partner_key',
-    ]);
-
-    // Dynamic route for /booknetic/{resource}/{id}
+    // Most specific: /booknetic/{resource}/{id}
     register_rest_route('custom-booking/v2', '/booknetic/(?P<resource>[a-zA-Z0-9_-]+)/(?P<id>\d+)', [
         'methods'  => ['GET', 'PUT', 'DELETE'],
         'callback' => 'handle_booknetic_resource',
@@ -19,16 +12,22 @@ add_action('rest_api_init', function () {
         ],
     ]);
 
-// Route for /booknetic/{resource} to list all rows
-register_rest_route('custom-booking/v2', '/booknetic/(?P<resource>[a-zA-Z0-9_-]+)', [
-    'methods'  => 'GET',
-    'callback' => 'handle_booknetic_resource_list',
-    'permission_callback' => 'allow_jwt_or_partner_key',
-    'args' => [
-        'resource' => ['required' => true],
-    ],
-]);
+    // Then: /booknetic/{resource}
+    register_rest_route('custom-booking/v2', '/booknetic/(?P<resource>[a-zA-Z0-9_-]+)', [
+        'methods'  => 'GET',
+        'callback' => 'handle_booknetic_resource_list',
+        'permission_callback' => 'allow_jwt_or_partner_key',
+        'args' => [
+            'resource' => ['required' => true],
+        ],
+    ]);
 
+    // Least specific: /booknetic
+    register_rest_route('custom-booking/v2', '/booknetic', [
+        'methods'  => ['GET'],
+        'callback' => 'get_all_booknetic_data',
+        'permission_callback' => 'allow_jwt_or_partner_key',
+    ]);
 });
 
 function get_all_booknetic_data() {
