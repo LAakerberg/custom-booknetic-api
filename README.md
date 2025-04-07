@@ -55,6 +55,10 @@ define('JWT_AUTH_CORS_ENABLE', true);
   - In the admin mangement page can you add/delete and enable/disable API key
   - You can manage if the key should be able to GET/POST/PUT/DELETE access
 
+## Database table
+
+It's create and store the API Key in the database **wp_option → custom_booknetic_partner_api_keys**
+
 ## 📦 API Endpoint
 
 This is the default endpoint for your api, it's protected with an API key or JWT Auth token
@@ -62,3 +66,11 @@ This is the default endpoint for your api, it's protected with an API key or JWT
 ```
 https://yourdomainhere.com/wp-json/custom-booking/v2/booknetic/
 ```
+
+## Not an official booknetic API plugin
+
+This is not an official booknetic API plugin. Use the plugin on your own risk
+and always secure your and the customers data.
+
+Booknetic are not able to give you any support on the API and any update could possible break the API setup without
+any notification. Make sure you have an backup or handling API error's
