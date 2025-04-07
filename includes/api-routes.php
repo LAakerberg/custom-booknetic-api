@@ -5,7 +5,7 @@ add_action('rest_api_init', function () {
     register_rest_route('custom-booking/v2', '/booknetic/(?P<resource>[a-zA-Z0-9_-]+)/(?P<id>\d+)', [
         'methods'  => ['GET', 'PUT', 'DELETE'],
         'callback' => 'handle_booknetic_resource',
-        'permission_callback' => 'allow_jwt_or_partner_key',
+        'permission_callback' => 'allow_jwt_or_api_key_name',
         'args' => [
             'resource' => ['required' => true],
             'id'       => ['required' => true],
@@ -16,7 +16,7 @@ add_action('rest_api_init', function () {
     register_rest_route('custom-booking/v2', '/booknetic/(?P<resource>[a-zA-Z0-9_-]+)', [
         'methods'  => 'GET',
         'callback' => 'handle_booknetic_resource_list',
-        'permission_callback' => 'allow_jwt_or_partner_key',
+        'permission_callback' => 'allow_jwt_or_api_key_name',
         'args' => [
             'resource' => ['required' => true],
         ],
@@ -26,7 +26,7 @@ add_action('rest_api_init', function () {
     register_rest_route('custom-booking/v2', '/booknetic', [
         'methods'  => ['GET'],
         'callback' => 'get_all_booknetic_data',
-        'permission_callback' => 'allow_jwt_or_partner_key',
+        'permission_callback' => 'allow_jwt_or_api_key_name',
     ]);
 });
 
@@ -121,7 +121,7 @@ function handle_booknetic_resource_list(WP_REST_Request $request) {
     return rest_ensure_response($results);
 }
 
-function allow_jwt_or_partner_key(WP_REST_Request $request) {
+function allow_jwt_or_api_key_name(WP_REST_Request $request) {
     $method = strtoupper($request->get_method());
 
     // ✅ WordPress users via JWT

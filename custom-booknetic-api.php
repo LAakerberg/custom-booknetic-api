@@ -12,4 +12,4 @@
  
  require_once plugin_dir_path(__FILE__) . 'includes/db-schema.php';
  require_once plugin_dir_path(__FILE__) . 'includes/api-routes.php';
- require_once plugin_dir_path(__FILE__) . 'includes/admin-ui.php';
+ require_once plugin_dir_path(__FILE__) . 'includes/admin-settings.php';
