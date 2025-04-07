@@ -11,6 +11,14 @@ This plugin adds a custom REST API endpoint with dual authentication:
 2. Activate the plugin via **Plugins → Installed Plugins**
 3. (Optional) Install and configure the **JWT Auth plugin**:
    - Set `JWT_AUTH_SECRET_KEY` in `wp-config.php`
+
+```
+/* JWT Auth bearer token */
+
+define('JWT_AUTH_SECRET_KEY', '48sdD21813S21zw121dD3fa'); // use a strong random string
+define('JWT_AUTH_CORS_ENABLE', true);
+```
+
 4. Go to **Settings → Booknetic API** to manage partner API keys
 
 ## 🔐 Authentication Options
@@ -37,6 +45,8 @@ This plugin adds a custom REST API endpoint with dual authentication:
 ```
 
 - Include `Authorization: Bearer your-token` in requests
+- You can now test the bearer token if you use postman. Just add the token you got for the response
+  and try to "GET" = https://yourdomainhere.com/wp-json/custom-booking/v2/booknetic/
 
 ### 2. API Key (Partners)
 
@@ -46,3 +56,9 @@ This plugin adds a custom REST API endpoint with dual authentication:
   - You can manage if the key should be able to GET/POST/PUT/DELETE access
 
 ## 📦 API Endpoint
+
+This is the default endpoint for your api, it's protected with an API key or JWT Auth token
+
+```
+https://yourdomainhere.com/wp-json/custom-booking/v2/booknetic/
+```

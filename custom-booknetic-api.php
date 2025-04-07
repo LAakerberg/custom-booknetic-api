@@ -3,7 +3,7 @@
  * Plugin Name: Custom Booknetic API
  * Description: REST API with JWT and per-user API key support.
  * Version: 1.0
- * Author: Your Name
+ * Author: LAA
  */
 
 defined('ABSPATH') || exit;
