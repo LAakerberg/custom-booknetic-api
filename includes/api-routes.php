@@ -54,7 +54,7 @@ function handle_booknetic_resource(WP_REST_Request $request) {
 
     $resource = sanitize_key($request->get_param('resource'));
     $id       = intval($request->get_param('id'));
-    $method   = $request->get_method();
+    $method   = strtoupper($request->get_method());
 
     $allowed_resources = [
         'appointments' => 'bkntc_appointments',
@@ -122,8 +122,9 @@ function handle_booknetic_resource_list(WP_REST_Request $request) {
 }
 
 function allow_jwt_or_partner_key(WP_REST_Request $request) {
-    $method = $request->get_method();
+    $method = strtoupper($request->get_method());
 
+    // ✅ WordPress users via JWT
     if (is_user_logged_in()) {
         if ($method === 'GET') return current_user_can('read');
         if (in_array($method, ['POST', 'PUT'])) return current_user_can('edit_posts');
@@ -131,18 +132,28 @@ function allow_jwt_or_partner_key(WP_REST_Request $request) {
         return false;
     }
 
+    // ✅ External partners via API key
     $provided_key = trim($request->get_header('x-api-key'));
-    $partner_keys = get_option('custom_booknetic_partner_api_keys', []);
-
-    foreach ($partner_keys as $partner => $config) {
-        if (
-            $config['enabled'] &&
-            $config['key'] === $provided_key &&
-            in_array($method, $config['methods'])
-        ) {
-            return true;
-        }
+    if (empty($provided_key)) {
+        return new WP_Error('rest_forbidden', 'Missing API key.', ['status' => 403]);
     }
 
-    return new WP_Error('rest_forbidden', 'Unauthorized: missing or invalid token/key.', ['status' => 403]);
+    global $wpdb;
+    $table = $wpdb->prefix . 'booknetic_api_keys';
+
+    $row = $wpdb->get_row($wpdb->prepare(
+        "SELECT * FROM $table WHERE api_key = %s AND enabled = 1",
+        $provided_key
+    ));
+
+    if (!$row) {
+        return new WP_Error('rest_forbidden', 'Invalid or disabled API key.', ['status' => 403]);
+    }
+
+    $allowed_methods = array_map('strtoupper', explode(',', $row->methods));
+    if (!in_array($method, $allowed_methods)) {
+        return new WP_Error('rest_forbidden', 'API key not allowed for this method.', ['status' => 403]);
+    }
+
+    return true;
 }
