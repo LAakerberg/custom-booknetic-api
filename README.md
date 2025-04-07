@@ -7,7 +7,7 @@ This plugin adds a custom REST API endpoint with dual authentication:
 
 ## 🔧 Installation
 
-1. Upload the `custom-booknetic-api` folder to `/wp-content/plugins/`
+1. Create/upload the `custom-booknetic-api` folder to `/wp-content/plugins/`
 2. Activate the plugin via **Plugins → Installed Plugins**
 3. (Optional) Install and configure the **JWT Auth plugin**:
    - Set `JWT_AUTH_SECRET_KEY` in `wp-config.php`
