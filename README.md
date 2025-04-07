@@ -17,8 +17,8 @@ This plugin adds a custom REST API endpoint with dual authentication:
 
 ### 1. JWT (WordPress Users)
 
-- Use `/wp-json/jwt-auth/v1/token` to get a Bearer token
-- - you can use postman to send a body:
+- Use `https://yourdomainhere.com/wp-json/jwt-auth/v1/token` to get a Bearer token
+  - you can use postman to send a body:
 
 ```
 {
@@ -27,7 +27,7 @@ This plugin adds a custom REST API endpoint with dual authentication:
 }
 ```
 
-- - In return you will get an bearer token:
+- In return you will get an bearer token:
 
 ```
     "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2Rldi1lbnYuc2pvYnJpcy5vbmVkZXNpZ24ubnUiLCJpYXQiOjE3NDQwNDIwNzksIm5iZiI6MTc0NDA0MjA3OSwiZXhwIjoxNzQ0NjQ2ODc5LCJkYXRhIjp7InVzZXIiOnsiaWQiOiIxIn19fQ.hWp3-FcPJB8a-FDCq-cr5_KvGd3QsL-QfmP_MiIv4aw",
