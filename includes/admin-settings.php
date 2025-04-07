@@ -61,7 +61,7 @@ function booknetic_api_admin_page() {
                 </thead>
                 <tbody>
                     <?php foreach ($existing as $partner => $config): 
-                        $rand = wp_generate_password(20, false); ?>
+                        $rand = wp_generate_password(64, false); ?>
                         <tr>
                             <td><input type="text" name="partner[]" value="<?php echo esc_attr($partner); ?>" /></td>
                             <td>
@@ -86,7 +86,7 @@ function booknetic_api_admin_page() {
                                 <label><input type="checkbox" name="methods[new][]" value="<?php echo $method; ?>" /> <?php echo $method; ?></label><br>
                             <?php endforeach; ?>
                         </td>
-                        <td>—</td>
+                        <td>ï¿½</td>
                     </tr>
                 </tbody>
             </table>
