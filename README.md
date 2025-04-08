@@ -74,3 +74,5 @@ and always secure your and the customers data.
 
 Booknetic are not able to give you any support on the API and any update could possible break the API setup without
 any notification. Make sure you have an backup or handling API error's
+
+Test
