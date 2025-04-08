@@ -57,7 +57,7 @@ define('JWT_AUTH_CORS_ENABLE', true);
 
 ## Database table
 
-It's create and store the API Key in the database **wp_option → custom_booknetic_partner_api_keys**
+It's create and store the API Key in the database **wp_booknetic_api_keys**
 
 ## 📦 API Endpoint
 
