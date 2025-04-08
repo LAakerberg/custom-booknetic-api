@@ -22,6 +22,15 @@ add_action('rest_api_init', function () {
         ],
     ]);
 
+    register_rest_route('custom-booking/v2', '/booknetic/(?P<resource>[a-zA-Z0-9_-]+)', [
+        'methods'  => 'POST',
+        'callback' => 'create_booknetic_resource',
+        'permission_callback' => 'allow_jwt_or_api_key_name',
+        'args' => [
+            'resource' => ['required' => true],
+        ],
+    ]);
+
     // Least specific: /booknetic
     register_rest_route('custom-booking/v2', '/booknetic', [
         'methods'  => ['GET'],
@@ -119,6 +128,48 @@ function handle_booknetic_resource_list(WP_REST_Request $request) {
     $table = $wpdb->prefix . $allowed_resources[$resource];
     $results = $wpdb->get_results("SELECT * FROM $table", ARRAY_A);
     return rest_ensure_response($results);
+}
+
+function create_booknetic_resource(WP_REST_Request $request) {
+    global $wpdb;
+
+    $resource = sanitize_key($request->get_param('resource'));
+    $body = $request->get_json_params();
+
+    $allowed_resources = [
+        'appointments' => 'bkntc_appointments',
+        'customers'    => 'bkntc_customers',
+        'giftcards'    => 'bkntc_giftcards',
+        'coupons'      => 'bkntc_coupons',
+        'locations'    => 'bkntc_locations',
+        'staff'        => 'bkntc_staff',
+        'services'     => 'bkntc_services',
+        'workflow_logs'=> 'bkntc_workflow_logs',
+    ];
+
+    if (!isset($allowed_resources[$resource])) {
+        return new WP_Error('invalid_resource', 'Invalid resource: ' . $resource, ['status' => 404]);
+    }
+
+    if (empty($body)) {
+        return new WP_Error('empty_body', 'POST request body is empty.', ['status' => 400]);
+    }
+
+    $table = $wpdb->prefix . $allowed_resources[$resource];
+
+    // Remove 'id' if provided — let MySQL autoincrement it
+    unset($body['id']);
+
+    $result = $wpdb->insert($table, $body);
+
+    if (!$result) {
+        return new WP_Error('insert_failed', 'Failed to insert record.', ['status' => 500]);
+    }
+
+    return rest_ensure_response([
+        'inserted' => true,
+        'insert_id' => $wpdb->insert_id,
+    ]);
 }
 
 function allow_jwt_or_api_key_name(WP_REST_Request $request) {
